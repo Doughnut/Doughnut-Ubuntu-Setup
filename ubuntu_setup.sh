@@ -6,7 +6,8 @@ if [ "$EUID" -ne 0 ]
   echo ""
 fi
 
-echo "Please enter your username: "; read USERNAME
+echo "Please enter your username: "; read USER1
+apt-get install iptables-persistent -y
 
 mkdir /tmp/setup/
 cd /tmp/setup
@@ -32,7 +33,7 @@ $IPT -A OUTPUT -o lo -j ACCEPT
 $IPT -A INPUT -p tcp ! --syn -m state --state NEW -s 0.0.0.0/0 -j DROP
 $IPT -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 $IPT -A INPUT -p tcp --dport 22 -m state --state NEW -s 0.0.0.0/0 -j ACCEPT
-apt-get install iptables-persistent -y
+iptables-save > /etc/iptables/rules.v4
 
 apt-get install libxss1 libappindicator1 libindicator7 -y
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
@@ -57,14 +58,16 @@ wget $SUBL
 dpkg -i sublime-text*.deb
 
 #Install Dropbox
-DROP=$(printf "www.dropbox.com"; curl --silent  https://www.dropbox.com/install?os=lnx | grep -i "ubuntu" | grep -i "amd64.deb" | cut -d "\"" -f 510)
-wget $DROP
-dpkg -i dropbox*.deb
+version=$(cat /etc/*-release | grep -i "DISTRIB_CODENAME" | cut -d "=" -f2)
+deb http://linux.dropbox.com/ubuntu $version main
+apt-key adv --keyserver pgp.mit.edu --recv-keys 5044912E
+apt-get update > /dev/null && apt-get install nautilus-dropbox -y; pkill nautilus # you're welcome, dropbox
+
 
 apt-get update -y > /dev/null && apt-get upgrade -y
 
-mkdir /home/$USERNAME/.config/autostart
-cat << EOF >> /home/$USERNAME/.config/autostart/guake.desktop
+mkdir /home/$USER1/.config/autostart
+cat << EOF >> /home/$USER1/.config/autostart/guake.desktop
 [Desktop Entry]
 Encoding=UTF-8
 Name=Guake Terminal
@@ -88,12 +91,13 @@ X-Desktop-File-Install-Version=0.22
 
 EOF
 
+
 #Oh-My-ZSH Install (because it's amazing)
-git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USERNAME/.oh-my-zsh
-cp /home/$USERNAME/.zshrc /home/$USERNAME/.zshrc.orig
-cp /home/$USERNAME/.oh-my-zsh/templates/zshrc.zsh-template /home/$USERNAME/.zshrc
-sed -i 's/ZSH_THEME=.*$/ZSH_THEME="dallas"/g' /home/$USERNAME/.zshrc
-chsh -s /bin/zsh $USERNAME
+git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER1/.oh-my-zsh
+cp /home/$USER1/.zshrc /home/$USER1/.zshrc.orig
+cp /home/$USER1/.oh-my-zsh/templates/zshrc.zsh-template /home/$USER1/.zshrc
+sed -i 's/ZSH_THEME=.*$/ZSH_THEME="dallas"/g' /home/$USER1/.zshrc
+chsh -s /bin/zsh $USER1
 
 
 
