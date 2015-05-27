@@ -23,6 +23,7 @@ EOF
 
 sysctl -p
 
+IPT="/sbin/iptables"
 $IPT --flush
 $IPT --delete-chain
 $IPT -P INPUT DROP
@@ -40,7 +41,7 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 dpkg -i google-chrome*.deb
 apt-get install -f -y
 
-apt-get install gnome-tweak-tool thunderbird pidgin pidgin-sipe guake python-pip vlc pithos openssh-server zsh python-pandas python-beautifulsoup haveged unrar wget git vim sendmail xclip -y
+apt-get install curl gnome-tweak-tool thunderbird pidgin pidgin-sipe guake python-pip vlc pithos openssh-server zsh python-pandas python-beautifulsoup haveged unrar wget git vim sendmail xclip -y
 
 cat << EOF >> /etc/ssh/sshd_config
 
