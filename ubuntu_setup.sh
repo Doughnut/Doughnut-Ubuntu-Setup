@@ -59,10 +59,9 @@ wget $SUBL
 dpkg -i sublime-text*.deb
 
 #Install Dropbox
-version=$(cat /etc/*-release | grep -i "DISTRIB_CODENAME" | cut -d "=" -f2)
-deb http://linux.dropbox.com/ubuntu $version main
 apt-key adv --keyserver pgp.mit.edu --recv-keys 5044912E
-apt-get update > /dev/null && apt-get install nautilus-dropbox -y; pkill nautilus # you're welcome, dropbox
+add-apt-repository "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main"
+apt-get update > /dev/null && apt-get install nautilus-dropbox python-gpgme -y; pkill nautilus # you're welcome, dropbox
 
 
 apt-get update -y > /dev/null && apt-get upgrade -y
