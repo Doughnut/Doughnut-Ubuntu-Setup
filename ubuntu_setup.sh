@@ -52,6 +52,7 @@ MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-
 AllowUsers jeffreyf
 EOF
 
+add-apt-repository ppa:pi-rho/security -y > /dev/null && apt-get update > /dev/null && apt-get install nmap -y
 
 # Install Sublime Text 3
 SUBL=$(curl https://www.sublimetext.com/3 | grep -i "amd64.deb" | cut -d "\"" -f 4)
@@ -61,13 +62,15 @@ dpkg -i sublime-text*.deb
 #Install Dropbox
 apt-key adv --keyserver pgp.mit.edu --recv-keys 5044912E
 add-apt-repository "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main"
-apt-get update > /dev/null && apt-get install nautilus-dropbox python-gpgme -y; pkill nautilus # you're welcome, dropbox
+apt-get update > /dev/null && apt-get install dropbox python-gpgme -y; pkill nautilus # you're welcome, dropbox
 
 
 apt-get update -y > /dev/null && apt-get upgrade -y
 
-mkdir /home/$USER1/.config/autostart
-cat << EOF >> /home/$USER1/.config/autostart/guake.desktop
+
+
+runuser -l $USER1 "mkdir /home/$USER1/.config/autostart"
+runuser -l $USER1 "cat << EOF >> /home/$USER1/.config/autostart/guake.desktop
 [Desktop Entry]
 Encoding=UTF-8
 Name=Guake Terminal
@@ -89,15 +92,15 @@ StartupNotify=true
 Keywords=Terminal;Utility;
 X-Desktop-File-Install-Version=0.22
 
-EOF
+EOF"
 
 
 #Oh-My-ZSH Install (because it's amazing)
-git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER1/.oh-my-zsh
-cp /home/$USER1/.zshrc /home/$USER1/.zshrc.orig
-cp /home/$USER1/.oh-my-zsh/templates/zshrc.zsh-template /home/$USER1/.zshrc
-sed -i 's/ZSH_THEME=.*$/ZSH_THEME="dallas"/g' /home/$USER1/.zshrc
-chsh -s /bin/zsh $USER1
+runuser -l $USER1 "git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER1/.oh-my-zsh"
+runuser -l $USER1 "cp /home/$USER1/.zshrc /home/$USER1/.zshrc.orig"
+runuser -l $USER1 "cp /home/$USER1/.oh-my-zsh/templates/zshrc.zsh-template /home/$USER1/.zshrc"
+runuser -l $USER1 "sed -i 's/ZSH_THEME=.*$/ZSH_THEME="dallas"/g' /home/$USER1/.zshrc"
+runuser -l $USER1 "chsh -s /bin/zsh $USER1"
 
 
 
