@@ -98,11 +98,10 @@ EOF"
 
 
 #Oh-My-ZSH Install (because it's amazing)
-runuser -l $USER1 "git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER1/.oh-my-zsh"
-runuser -l $USER1 "cp /home/$USER1/.zshrc /home/$USER1/.zshrc.orig"
-runuser -l $USER1 "cp /home/$USER1/.oh-my-zsh/templates/zshrc.zsh-template /home/$USER1/.zshrc"
-runuser -l $USER1 "sed -i 's/ZSH_THEME=.*$/ZSH_THEME="dallas"/g' /home/$USER1/.zshrc"
-runuser -l $USER1 "chsh -s /bin/zsh $USER1"
-
+su $USER1 "git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER1/.oh-my-zsh"
+su $USER1 "cp /home/$USER1/.zshrc /home/$USER1/.zshrc.orig"
+su $USER1 "cp /home/$USER1/.oh-my-zsh/templates/zshrc.zsh-template /home/$USER1/.zshrc"
+su $USER1 "sed -i 's/ZSH_THEME=.*$/ZSH_THEME="dallas"/g' /home/$USER1/.zshrc"
+su $USER1 "chsh $USER1 -s /bin/zsh"
 
 
