@@ -66,6 +66,8 @@ apt-key adv --keyserver pgp.mit.edu --recv-keys 5044912E
 add-apt-repository "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main"
 apt-get update > /dev/null && apt-get install dropbox python-gpgme -y; pkill nautilus # you're welcome, dropbox
 
+pip install thefuck
+pip install livestreamer
 
 apt-get update -y > /dev/null && apt-get upgrade -y
 
@@ -101,7 +103,9 @@ EOF"
 su $USER1 "git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER1/.oh-my-zsh"
 su $USER1 "cp /home/$USER1/.zshrc /home/$USER1/.zshrc.orig"
 su $USER1 "cp /home/$USER1/.oh-my-zsh/templates/zshrc.zsh-template /home/$USER1/.zshrc"
-su $USER1 "sed -i 's/ZSH_THEME=.*$/ZSH_THEME="dallas"/g' /home/$USER1/.zshrc"
+su $USER1 "sed -i 's/ZSH_THEME=.*$/ZSH_THEME="junkfood"/g' /home/$USER1/.zshrc"
+su $USER1 "sed -i 's/# COMPLETION_WAITING_DOTS="true"$/COMPLETION_WAITING_DOTS="true"/g' /home/jeffreyf/.zshrc"
+su $USER1 "sed -i 's/# HIST_STAMPS="mm/dd/yyyy"$/HIST_STAMPS="mm/dd/yyyy"/g' /home/jeffreyf/.zshrc"
 su $USER1 "chsh $USER1 -s /bin/zsh"
 
 
