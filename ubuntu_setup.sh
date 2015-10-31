@@ -47,9 +47,10 @@ apt-get install curl gnome-tweak-tool thunderbird pidgin pidgin-sipe guake pytho
 
 cat << EOF >> /etc/ssh/sshd_config
 
-# Disabling bad MACs and CYPHERS for sshd
+# Disabling bad MACs, CYPHERS, and Key Exchanges for sshd
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com
+KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 
 AllowUsers jeffreyf
 EOF
