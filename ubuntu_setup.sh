@@ -4,6 +4,7 @@ if [ "$EUID" -ne 0 ]
   then echo ""
   echo "Please Run As Root"
   echo ""
+  exit
 fi
 
 echo "Please enter your username: "; read USER1
@@ -52,7 +53,7 @@ Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.
 MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128@openssh.com
 KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 
-AllowUsers jeffreyf
+AllowUsers $USER1
 EOF
 
 add-apt-repository ppa:pi-rho/security -y > /dev/null && apt-get update > /dev/null && apt-get install nmap -y
@@ -74,39 +75,15 @@ apt-get update -y > /dev/null && apt-get upgrade -y
 
 
 
-runuser -l $USER1 "mkdir /home/$USER1/.config/autostart"
-runuser -l $USER1 "cat << EOF >> /home/$USER1/.config/autostart/guake.desktop
-[Desktop Entry]
-Encoding=UTF-8
-Name=Guake Terminal
-Name[pt]=Guake Terminal
-Name[pt_BR]=Guake Terminal
-Name[fr]=Guake Terminal
-Name[fr_FR]=Guake Terminal
-Comment=Use the command line in a Quake-like terminal
-Comment[pt]=Utilizar a linha de comando em um terminal estilo Quake
-Comment[pt_BR]=Utilizar a linha de comando em um terminal estilo Quake
-Comment[fr]=Utilisez la ligne de commande comme dans un terminal quake
-Comment[fr_FR]=Utilisez la ligne de commande comme dans un terminal quake
-TryExec=guake
-Exec=guake 
-Icon=guake
-Type=Application
-Categories=GNOME;GTK;System;Utility;TerminalEmulator;
-StartupNotify=true
-Keywords=Terminal;Utility;
-X-Desktop-File-Install-Version=0.22
-
-EOF"
+##Oh-My-ZSH Install (because it's amazing)
+#git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER1/.oh-my-zsh
+#cp /home/$USER1/.zshrc /home/$USER1/.zshrc.orig
+#cp /home/$USER1/.oh-my-zsh/templates/zshrc.zsh-template /home/$USER1/.zshrc
+#sed -i 's/ZSH_THEME=.*$/ZSH_THEME="junkfood"/g' /home/$USER1/.zshrc
+#sed -i 's/# COMPLETION_WAITING_DOTS="true"$/COMPLETION_WAITING_DOTS="true"/g' /home/jeffreyf/.zshrc
+#sed -i 's/# HIST_STAMPS="mm/dd/yyyy"$/HIST_STAMPS="mm/dd/yyyy"/g' /home/jeffreyf/.zshrc
+#chsh $USER1 -s /bin/zsh
 
 
-#Oh-My-ZSH Install (because it's amazing)
-su $USER1 "git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$USER1/.oh-my-zsh"
-su $USER1 "cp /home/$USER1/.zshrc /home/$USER1/.zshrc.orig"
-su $USER1 "cp /home/$USER1/.oh-my-zsh/templates/zshrc.zsh-template /home/$USER1/.zshrc"
-su $USER1 "sed -i 's/ZSH_THEME=.*$/ZSH_THEME="junkfood"/g' /home/$USER1/.zshrc"
-su $USER1 "sed -i 's/# COMPLETION_WAITING_DOTS="true"$/COMPLETION_WAITING_DOTS="true"/g' /home/jeffreyf/.zshrc"
-su $USER1 "sed -i 's/# HIST_STAMPS="mm/dd/yyyy"$/HIST_STAMPS="mm/dd/yyyy"/g' /home/jeffreyf/.zshrc"
-su $USER1 "chsh $USER1 -s /bin/zsh"
 
 
